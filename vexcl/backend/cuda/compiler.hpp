@@ -81,7 +81,7 @@ inline vex::backend::program build_sources(
 
     // Write source to a .cu file
     std::string basename = program_binaries_path(hash, true) + "kernel";
-    std::string ptxfile  = basename + ".ptx";
+    std::string ptxfile  = basename + ".cubin";
 
     if ( !boost::filesystem::exists(ptxfile) ) {
         std::string cufile = basename + ".cu";
@@ -94,7 +94,7 @@ inline vex::backend::program build_sources(
         // Compile the source to ptx.
         std::ostringstream cmdline;
         cmdline
-            << "nvcc -ptx -arch=sm_" << std::get<0>(cc) << std::get<1>(cc)
+            << "nvcc -cubin -arch=sm_" << std::get<0>(cc) << std::get<1>(cc)
             << " " << VEXCL_NVCC_OPTIONS << " " << compile_options
             << " -o " << ptxfile << " " << cufile;
         if (0 != system(cmdline.str().c_str()) ) {
